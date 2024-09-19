@@ -1,1 +1,27 @@
 GET http://localhost:3000/groups
+
+###
+
+GET http://localhost:3000/groups/4
+
+###
+
+POST http://localhost:3000/groups
+Content-Type: application/json
+
+{
+    "name": "에델바이스5"
+}
+
+###
+
+PUT http://localhost:3000/groups/4
+Content-Type: application/json
+
+{
+    "name": "에델바이스444"
+}
+
+###
+
+DELETE http://localhost:3000/groups/4
