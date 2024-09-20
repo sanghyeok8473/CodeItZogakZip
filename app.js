@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import Group from './models/Group.js';
 import cors from 'cors';
+import upload from './upload.js'; // multer 설정 추가
 
 dotenv.config();
 
@@ -27,47 +28,59 @@ function asyncHandler(handler) {
   }
 }
 
-app.get('/groups', asyncHandler(async (req, res) => { // 그룹 조회 뼈대 코드
+// 그룹 목록 조회
+app.get('/groups', asyncHandler(async (req, res) => {
   const groups = await Group.find();
-
   res.send(groups);
 }));
 
-app.get('/groups/:groupId', asyncHandler(async (req, res) => { // 그룹 상세 정보 조회 뼈대 코드
+// 그룹 상세 정보 조회
+app.get('/groups/:groupId', asyncHandler(async (req, res) => {
   const groupId = Number(req.params.groupId);
-  const group = await Group.findOne({ groupId });  // groupId 필드로 검색
+  const group = await Group.findOne({ groupId });
 
-  if (group){
+  if (group) {
     res.send(group);
-  }
-  else{
+  } else {
     res.status(404).send({ message: 'Cannot find given groupId' });
   }
 }));
 
-app.post('/groups', asyncHandler(async (req, res) => {
-  // DB에서 가장 큰 groupId 값을 찾음
+// 그룹 생성
+app.post('/groups', upload.single('mainImg'), asyncHandler(async (req, res) => {
   const lastGroup = await Group.findOne().sort({ groupId: -1 });
-  const nextGroupId = lastGroup ? lastGroup.groupId + 1 : 1;  // 가장 큰 groupId에 +1, 없으면 1부터 시작
+  const nextGroupId = lastGroup ? lastGroup.groupId + 1 : 1;
 
-  // 새로운 그룹 생성 데이터에 nextGroupId 추가
-  const newGroupData = { ...req.body, groupId: nextGroupId };
+  // public이 false인 경우 password 확인
+  if (req.body.public === 'false') {
+    if (!req.body.password) {
+      return res.status(400).send({ message: 'Password is required for creating a closed group.' });
+    }
+  } else {
+    // public이 false가 아니면 password 무시
+    delete req.body.password;
+  }
 
-  // 새로운 그룹 생성
+  const newGroupData = {
+    ...req.body,
+    groupId: nextGroupId,
+    mainImg: req.file.location, // S3에서 반환된 이미지 URL
+  };
+
   const newGroup = await Group.create(newGroupData);
-
   res.status(201).send(newGroup);
 }));
 
-app.put('/groups/:groupId', asyncHandler(async (req, res) => { // 그룹 수정 뼈대 코드
+
+// 그룹 수정
+app.put('/groups/:groupId', asyncHandler(async (req, res) => {
   const groupId = Number(req.params.groupId);
-  const group = await Group.findOne({ groupId });  // groupId 필드로 검색
+  const group = await Group.findOne({ groupId });
 
   if (!group) {
     return res.status(404).send({ message: 'Cannot find given groupId' });
   }
 
-  // public이 false일 경우 비밀번호 확인
   if (!group.public) {
     const { password } = req.body;
     
@@ -75,15 +88,12 @@ app.put('/groups/:groupId', asyncHandler(async (req, res) => { // 그룹 수정 
       return res.status(400).send({ message: 'Password is required for updating a closed group.' });
     }
 
-    // 비밀번호가 일치하지 않는 경우
     if (password !== group.password) {
       return res.status(403).send({ message: 'Incorrect password.' });
     }
   }
 
-  // group 객체 업데이트
   Object.keys(req.body).forEach((key) => {
-    // password는 다시 덮어쓰지 않도록 예외 처리
     if (key !== 'password') {
       group[key] = req.body[key];
     }
@@ -93,15 +103,15 @@ app.put('/groups/:groupId', asyncHandler(async (req, res) => { // 그룹 수정 
   res.send(group);
 }));
 
-app.delete('/groups/:groupId', asyncHandler(async (req, res) => { // 그룹 삭제 뼈대 코드
+// 그룹 삭제
+app.delete('/groups/:groupId', asyncHandler(async (req, res) => {
   const groupId = Number(req.params.groupId);
-  const group = await Group.findOne({ groupId });  // groupId 필드로 검색
+  const group = await Group.findOne({ groupId });
 
   if (!group) {
     return res.status(404).send({ message: 'Cannot find given groupId' });
   }
 
-  // public이 false일 경우 비밀번호 확인
   if (!group.public) {
     const { password } = req.body;
 
@@ -109,13 +119,11 @@ app.delete('/groups/:groupId', asyncHandler(async (req, res) => { // 그룹 삭�
       return res.status(400).send({ message: 'Password is required for deleting a closed group.' });
     }
 
-    // 비밀번호가 일치하지 않는 경우
     if (password !== group.password) {
       return res.status(403).send({ message: 'Incorrect password.' });
     }
   }
 
-  // 그룹 삭제
   await Group.deleteOne({ groupId });
   res.sendStatus(204);
 }));

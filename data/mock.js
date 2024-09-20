@@ -2,7 +2,7 @@ const data = [
     {
       groupId: 1,
       name: '에델바이스1',
-      mainImg: false,
+      mainImg: '',
       public: true,
       description: '에델1',
       badges: 2,
@@ -14,7 +14,7 @@ const data = [
     {
       groupId: 2,
       name: '에델바이스2',
-      mainImg: false,
+      mainImg: '',
       public: true,
       description: '에델2',
       badges: 3,
@@ -26,7 +26,7 @@ const data = [
     {
       groupId: 3,
       name: '에델바이스3',
-      mainImg: false,
+      mainImg: '',
       public: false,
       description: '에델3',
       password: '1234',
@@ -39,7 +39,7 @@ const data = [
     {
       groupId: 4,
       name: '에델바이스4',
-      mainImg: false,
+      mainImg: '',
       public: false,
       description: '에델4',
       password: '1234',
