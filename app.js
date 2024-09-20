@@ -1,9 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { DATABASE_URL } from './env.js';
+import * as dotenv from 'dotenv';
 import Group from './models/Group.js';
+import cors from 'cors';
+
+dotenv.config();
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 function asyncHandler(handler) {
@@ -115,5 +120,5 @@ app.delete('/groups/:groupId', asyncHandler(async (req, res) => { // 그룹 삭�
   res.sendStatus(204);
 }));
 
-app.listen(3000, () => console.log('Server Started'));
-mongoose.connect(DATABASE_URL).then(() => console.log('Connected to DB'));
+app.listen(process.env.PORT || 3000, () => console.log('Server Started'));
+mongoose.connect(process.env.DATABASE_URL).then(() => console.log('Connected to DB'));
