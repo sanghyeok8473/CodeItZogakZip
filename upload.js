@@ -22,7 +22,9 @@ const upload = multer({
     key: (req, file, cb) => {
       cb(null, Date.now().toString() + '-' + file.originalname);
     },
+    contentType: multerS3.AUTO_CONTENT_TYPE, // 자동으로 Content-Type 설정
   }),
 });
+
 
 export default upload;
