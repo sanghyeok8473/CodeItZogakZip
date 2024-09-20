@@ -2,6 +2,10 @@ GET http://localhost:3000/groups
 
 ###
 
+GET https://zogakzip4.onrender.com/groups/2
+
+###
+
 GET http://localhost:3000/groups/5
 
 ###
@@ -12,7 +16,7 @@ Content-Type: application/json
 {
     "name": "POST 리퀘스트 테스트",
     "description": "POST",
-    "open": false,
+    "public": false,
     "password": "5678"
 }
 
