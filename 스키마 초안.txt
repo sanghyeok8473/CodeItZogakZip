@@ -4,7 +4,7 @@
 2. 대표이미지(mainImg) : file?
 3. 그룹 소개(description) : string
 4. 그룹 공개 여부(open) : true/false, 디폴트는 true
-5. 비밀번호(password): string
+5. 비밀번호(password): string / 비밀번호는 groupId를 통해 식별한 그룹의 open이 false일 때만 유효
 6. createdAt: 자동 생성
 7. 배지 수(badges) : int, 디폴트값 0
 8. 추억 수(memories) : int, 디폴트값 0
