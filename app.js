@@ -67,8 +67,8 @@ app.put('/groups/:groupId', asyncHandler(async (req, res) => { // 그룹 수정 
     return res.status(404).send({ message: 'Cannot find given groupId' });
   }
 
-  // open이 false일 경우 비밀번호 확인
-  if (!group.open) {
+  // public이 false일 경우 비밀번호 확인
+  if (!group.public) {
     const { password } = req.body;
     
     if (!password) {
@@ -101,8 +101,8 @@ app.delete('/groups/:groupId', asyncHandler(async (req, res) => { // 그룹 삭�
     return res.status(404).send({ message: 'Cannot find given groupId' });
   }
 
-  // open이 false일 경우 비밀번호 확인
-  if (!group.open) {
+  // public이 false일 경우 비밀번호 확인
+  if (!group.public) {
     const { password } = req.body;
 
     if (!password) {
