@@ -71,7 +71,6 @@ app.post('/groups', upload.single('mainImg'), asyncHandler(async (req, res) => {
   res.status(201).send(newGroup);
 }));
 
-
 // 그룹 수정
 app.put('/groups/:groupId', asyncHandler(async (req, res) => {
   const groupId = Number(req.params.groupId);
@@ -81,6 +80,7 @@ app.put('/groups/:groupId', asyncHandler(async (req, res) => {
     return res.status(404).send({ message: 'Cannot find given groupId' });
   }
 
+  // public이 false일 경우 비밀번호 확인
   if (!group.public) {
     const { password } = req.body;
     
@@ -112,6 +112,7 @@ app.delete('/groups/:groupId', asyncHandler(async (req, res) => {
     return res.status(404).send({ message: 'Cannot find given groupId' });
   }
 
+  // public이 false일 경우 비밀번호 확인
   if (!group.public) {
     const { password } = req.body;
 
