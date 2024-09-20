@@ -2,7 +2,7 @@ GET http://localhost:3000/groups
 
 ###
 
-GET http://localhost:3000/groups/4
+GET http://localhost:3000/groups/5
 
 ###
 
@@ -10,18 +10,27 @@ POST http://localhost:3000/groups
 Content-Type: application/json
 
 {
-    "name": "에델바이스5"
+    "name": "에델바이스5",
+    "description": "에델5",
+    "open": false,
+    "password": "5678"
 }
 
 ###
 
-PUT http://localhost:3000/groups/4
+PUT http://localhost:3000/groups/5
 Content-Type: application/json
 
 {
-    "name": "에델바이스444"
+    "name": "에델바이스5!5!",
+    "password": "5678"
 }
 
 ###
 
-DELETE http://localhost:3000/groups/4
+DELETE http://localhost:3000/groups/5
+Content-Type: application/json
+
+{
+    "password": "56782"
+}
