@@ -1,1 +1,37 @@
 GET http://localhost:3000/groups
+
+###
+
+GET http://localhost:3000/groups/5
+
+###
+
+POST http://localhost:3000/groups
+Content-Type: application/json
+
+{
+    "name": "POST 리퀘스트 테스트",
+    "description": "POST",
+    "open": false,
+    "password": "5678"
+}
+
+###
+
+PUT http://localhost:3000/groups/5
+Content-Type: application/json
+
+{
+    "name": "PUT 리퀘스트 테스트",
+    "description": "PUT",
+    "password": "5678"
+}
+
+###
+
+DELETE http://localhost:3000/groups/5
+Content-Type: application/json
+
+{
+    "password": "56782"
+}
