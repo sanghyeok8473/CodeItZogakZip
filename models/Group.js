@@ -13,8 +13,8 @@ const GroupSchema = new mongoose.Schema(
           maxLength: 20,
         },
         mainImg: {
-          type: Boolean,
-          default: false,
+          type: String,
+          default: '',
         },
         description: {
           type: String,

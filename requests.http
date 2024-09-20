@@ -33,9 +33,9 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/groups/5
+DELETE http://localhost:3000/groups/7
 Content-Type: application/json
 
 {
-    "password": "56782"
+    "password": "2345"
 }
