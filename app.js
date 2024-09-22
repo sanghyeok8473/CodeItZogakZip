@@ -23,7 +23,7 @@ function asyncHandler(handler) {
         res.status(404).send({ message: 'Cannot find given groupId.' });
       } else {
         res.status(500).send({ message: e.message });
-      } 
+      }
     }
   }
 }
@@ -57,7 +57,7 @@ app.post('/groups', upload.single('mainImg'), asyncHandler(async (req, res) => {
       return res.status(400).send({ message: 'Password is required for creating a closed group.' });
     }
   } else {
-    // public이 false가 아니면 password 무시
+    // public이 true면 password 무시
     delete req.body.password;
   }
 
@@ -83,16 +83,19 @@ app.put('/groups/:groupId', asyncHandler(async (req, res) => {
   // public이 false일 경우 비밀번호 확인
   if (!group.public) {
     const { password } = req.body;
-    
+
     if (!password) {
       return res.status(400).send({ message: 'Password is required for updating a closed group.' });
     }
 
-    if (password !== group.password) {
+    // 해시된 비밀번호와 입력된 비밀번호 비교
+    const isMatch = await group.comparePassword(password);
+    if (!isMatch) {
       return res.status(403).send({ message: 'Incorrect password.' });
     }
   }
 
+  // 비밀번호는 업데이트 대상에서 제외
   Object.keys(req.body).forEach((key) => {
     if (key !== 'password') {
       group[key] = req.body[key];
@@ -102,6 +105,7 @@ app.put('/groups/:groupId', asyncHandler(async (req, res) => {
   await group.save();
   res.send(group);
 }));
+
 
 // 그룹 삭제
 app.delete('/groups/:groupId', asyncHandler(async (req, res) => {
@@ -120,7 +124,9 @@ app.delete('/groups/:groupId', asyncHandler(async (req, res) => {
       return res.status(400).send({ message: 'Password is required for deleting a closed group.' });
     }
 
-    if (password !== group.password) {
+    // 비밀번호 검증
+    const isMatch = await group.comparePassword(password);
+    if (!isMatch) {
       return res.status(403).send({ message: 'Incorrect password.' });
     }
   }

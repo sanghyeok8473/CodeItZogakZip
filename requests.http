@@ -2,7 +2,11 @@ GET http://localhost:3000/groups
 
 ###
 
-GET https://zogakzip4.onrender.com/groups/2
+GET https://zogakzip4.onrender.com/groups
+
+###
+
+DELETE https://zogakzip4.onrender.com/groups/6
 
 ###
 
@@ -33,7 +37,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/groups/7
+DELETE http://localhost:3000/groups/6
 Content-Type: application/json
 
 {
