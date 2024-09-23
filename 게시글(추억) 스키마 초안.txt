@@ -2,9 +2,9 @@
 
 1. 이름(name): string, required 필드
 2. 제목(title): string, required 필드
-3. 이미지(postImg, 한장) : string, 이미지 주소가 될 예정, required 필드
+3. 이미지(postImg, 한장) : string, 이미지 주소가 될 예정
 4. 본문(content) : string, required 필드
-5. 태그(hashtag) : string, required 필드
+5. 태그(tag) : string, required 필드
 6. 장소(place) : string, required 필드
 7. 추억 공개 여부(public) : true/false, 디폴트는 true, required 필드
 8. 비밀번호(password): string / 게시글의 경우에는 public에 상관 없이 반드시 입력되야 하는 required 필드임
