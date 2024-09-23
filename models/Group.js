@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import Post from './Post.js';
 
 const GroupSchema = new mongoose.Schema(
   {
@@ -43,6 +44,10 @@ const GroupSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    posts: {
+      type: [Number],
+      default: []
+    }
   },
   {
     timestamps: true,

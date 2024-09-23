@@ -6,7 +6,12 @@ GET https://zogakzip4.onrender.com/groups
 
 ###
 
-DELETE https://zogakzip4.onrender.com/groups/6
+DELETE https://zogakzip4.onrender.com/groups/7
+Content-Type: application/json
+
+{
+    "password": "2345"
+}
 
 ###
 
@@ -18,7 +23,7 @@ POST http://localhost:3000/groups
 Content-Type: application/json
 
 {
-    "name": "POST 리퀘스트 테스트",
+    "name": "POST 리퀘스트 테스트092322",
     "description": "POST",
     "public": false,
     "password": "5678"
@@ -26,18 +31,18 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/groups/5
+PUT http://localhost:3000/groups/10
 Content-Type: application/json
 
 {
-    "name": "PUT 리퀘스트 테스트2",
+    "name": "수정 여부 확인",
     "description": "PUT2",
-    "password": "5678"
+    "password": "2345"
 }
 
 ###
 
-DELETE http://localhost:3000/groups/6
+DELETE http://localhost:3000/groups/10
 Content-Type: application/json
 
 {
