@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import cors from 'cors';
 import groupRoutes from './routes/groupRoutes.js';
 import groupPostRoutes from './routes/groupPostRoutes.js';
-import postIdRoutes from './routes/postIdRoutes.js';
+// import postIdRoutes from './routes/postIdRoutes.js';
 
 dotenv.config();
 

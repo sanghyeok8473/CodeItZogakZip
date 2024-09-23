@@ -10,9 +10,29 @@ const router = express.Router();
 // 먼저, Group 스키마에 Post라는 형식을 추가하고, 여기에 넣는 개념으로 가야함.
 
 // 게시글 목록 조회
+// 먼저 groupId를 통해서 해당 그룹을 가져올 수 있도록 하고,
+// 해당 group의 posts배열에 들어있는 postId들만 뽑아서 게시글을 가져올 수 있도록 하면 됨.
 router.get('/:groupId', asyncHandler(async (req, res) => {
-  const posts = await Post.find();
-  res.send(posts);
+  const groupId = Number(req.params.groupId);
+
+  try {
+    // 그룹을 찾습니다.
+    const group = await Group.findOne({ groupId });
+
+    if (!group) {
+      return res.status(404).send({ message: '그룹을 찾을 수 없습니다.' });
+    }
+
+    // 그룹의 posts 배열에서 postId를 가져옵니다.
+    const postIds = group.posts;
+
+    // postId들을 이용하여 게시글을 조회합니다.
+    const posts = await Post.find({ postId: { $in: postIds } });
+
+    res.status(200).send(posts);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 }));
 
 // 게시글 생성
