@@ -12,6 +12,7 @@ const router = express.Router();
 // 게시글 목록 조회
 // 먼저 groupId를 통해서 해당 그룹을 가져올 수 있도록 하고,
 // 해당 group의 posts배열에 들어있는 postId들만 뽑아서 게시글을 가져올 수 있도록 하면 됨.
+
 router.get('/:groupId', asyncHandler(async (req, res) => {
   const groupId = Number(req.params.groupId);
 
@@ -26,14 +27,18 @@ router.get('/:groupId', asyncHandler(async (req, res) => {
     // 그룹의 posts 배열에서 postId를 가져옵니다.
     const postIds = group.posts;
 
-    // postId들을 이용하여 게시글을 조회합니다.
-    const posts = await Post.find({ postId: { $in: postIds } });
+    // postId들을 이용하여 필요한 필드만 가져옵니다.
+    const posts = await Post.find(
+      { postId: { $in: postIds } }, // postId가 그룹의 posts 배열에 포함된 것만 조회
+      'postId name public title postImg tag place likes comments' // 필요한 필드만 선택
+    );
 
     res.status(200).send(posts);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 }));
+
 
 // 게시글 생성
 router.post('/:groupId', upload.single('postImg'), asyncHandler(async (req, res) => {
