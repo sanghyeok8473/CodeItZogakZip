@@ -29,15 +29,7 @@ const GroupSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      validate: {
-        validator: function (value) {
-          if (!this.public && !value) {
-            return false; // 비밀번호가 없으면 유효성 검사 실패
-          }
-          return true;
-        },
-        message: 'Password is required when the group is not public.',
-      },
+      required: true,
     },
     badges: {
       type: Number,

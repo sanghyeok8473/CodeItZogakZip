@@ -51,25 +51,21 @@ app.post('/groups', upload.single('mainImg'), asyncHandler(async (req, res) => {
   const lastGroup = await Group.findOne().sort({ groupId: -1 });
   const nextGroupId = lastGroup ? lastGroup.groupId + 1 : 1;
 
-  // public이 false인 경우 password 확인
-  if (req.body.public === 'false') {
-    if (!req.body.password) {
-      return res.status(400).send({ message: 'Password is required for creating a closed group.' });
-    }
-  } else {
-    // public이 true면 password 무시
-    delete req.body.password;
+  // 비밀번호가 없으면 에러 반환
+  if (!req.body.password) {
+    return res.status(400).send({ message: 'Password is required for creating a group.' });
   }
 
   const newGroupData = {
     ...req.body,
     groupId: nextGroupId,
-    mainImg: req.file.location, // S3에서 반환된 이미지 URL
+    mainImg: req.file ? req.file.location : '', // S3에서 반환된 이미지 URL 또는 빈 문자열
   };
 
   const newGroup = await Group.create(newGroupData);
   res.status(201).send(newGroup);
 }));
+
 
 // 그룹 수정
 app.put('/groups/:groupId', asyncHandler(async (req, res) => {

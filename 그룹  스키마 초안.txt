@@ -1,22 +1,22 @@
 그룹 등록(그룹 스키마)
 
 1. 그룹명(name): string
-2. 대표이미지(mainImg) : file?
+2. 대표이미지(mainImg) : string(이미지주소가 될 예정)
 3. 그룹 소개(description) : string
-4. 그룹 공개 여부(open) : true/false, 디폴트는 true
+4. 그룹 공개 여부(public) : true/false, 디폴트는 true
 5. 비밀번호(password): string / 비밀번호는 groupId를 통해 식별한 그룹의 open이 false일 때만 유효
-6. createdAt: 자동 생성
-7. 배지 수(badges) : int, 디폴트값 0
-8. 추억 수(memories) : int, 디폴트값 0
-9. 공감 수(likes) : int, 디폴트값 0
+6. createdAt, updatedAt: 자동 생성
+7. 배지 수(badges) : number, 디폴트값 0
+8. 추억 수(memories) : number, 디폴트값 0
+9. 공감 수(likes) : number, 디폴트값 0
 
 그룹 수정: PUT /api/groups/{groupId}
 - 비밀번호 입력 후, 등록 된 비밀번호와 일치하면 수정 가능
-- 리퀘스트를 받을 때, 입력 된 값을 넘겨받아 일치하면 수정(PUT) 리스폰스를 돌려주도록 하면 될 것 같다.
+- 리퀘스트를 받을 때, 입력 된 값을 넘겨받아 일치하면 수정(PUT) 리스폰스를 돌려주도록 하면 됨.
 
 그룹 삭제: DELETE /api/groups/{groupId}
 - 비밀번호 입력 후, 등록 된 비밀번호와 일치하면 삭제 가능
-- 리퀘스트를 받을 때, 입력 된 값을 넘겨받아 일치하면 삭제(DELETE) 리스폰스를 돌려주도록 하면 될 것 같다.
+- 리퀘스트를 받을 때, 입력 된 값을 넘겨받아 일치하면 삭제(DELETE) 리스폰스를 돌려주도록 하면 됨.
 
 그룹 목록 조회: GET /api/groups
 - 각 그룹의 이미지(한 장), 그룹명, 그룹 소개, 그룹 공개 여부, 디데이(생성 후 지난 일수), 획득 배지수, 추억수, 그룹 공감수가 표시
