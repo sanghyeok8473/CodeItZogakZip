@@ -1,0 +1,35 @@
+GET http://localhost:3000/groups
+
+###
+
+GET http://localhost:3000/groups/5
+
+###
+
+GET http://localhost:3000/posts/4
+
+###
+
+PUT http://localhost:3000/posts/4
+Content-Type: application/json
+
+{
+    "name": "수정된 게시글 작성자 4",
+    "content": "PUT4",
+    "password": "2345"
+}
+
+###
+
+POST http://localhost:3000/groups/:groupId/posts
+Content-Type: application/json
+
+{
+    "name": "게시글 작성자 1",
+    "title": "게시글 제목 1",
+    "name": "게시글 작성자 1",
+    "name": "게시글 작성자 1",
+    "description": "POST",
+    "public": false,
+    "password": "5678"
+}
