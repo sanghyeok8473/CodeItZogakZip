@@ -23,7 +23,7 @@ router.get('/:postId', asyncHandler(async (req, res) => {
     );
 
     if (!post) {
-      return res.status(404).send({ message: '게시글을 찾을 수 없습니다.' });
+      return res.status(404).send({ message: '주어진 postId를 찾을 수 없습니다.' });
     }
 
     res.status(200).send(post);
@@ -38,19 +38,19 @@ router.put('/:postId', asyncHandler(async (req, res) => {
   const post = await Post.findOne({ postId });
 
   if (!post) {
-    return res.status(404).send({ message: 'Cannot find given postId' });
+    return res.status(404).send({ message: '주어진 postId를 찾을 수 없습니다.' });
   }
 
   const { password } = req.body;
 
   if (!password) {
-    return res.status(400).send({ message: 'Password is required for updating a closed post.' });
+    return res.status(400).send({ message: '게시글을 삭제하기 위해서는 비밀번호가 필요합니다.' });
   }
 
   // 해시된 비밀번호와 입력된 비밀번호 비교
   const isMatch = await post.comparePassword(password);
   if (!isMatch) {
-    return res.status(403).send({ message: 'Incorrect password.' });
+    return res.status(403).send({ message: '비밀번호가 틀렸습니다.' });
   }
 
   // 비밀번호는 업데이트 대상에서 제외
@@ -62,6 +62,31 @@ router.put('/:postId', asyncHandler(async (req, res) => {
 
   await post.save();
   res.send(post);
+}));
+
+// 게시글 삭제
+router.delete('/:postId', asyncHandler(async (req, res) => {
+  const postId = Number(req.params.postId);
+  const post = await Post.findOne({ postId });
+
+  if (!post) {
+    return res.status(404).send({ message: '주어진 postId를 찾을 수 없습니다.' });
+  }
+
+  const { password } = req.body;
+
+  if (!password) {
+    return res.status(400).send({ message: '게시글 삭제 시에는 비밀번호가 필요합니다.' });
+  }
+
+  // 비밀번호 검증
+  const isMatch = await post.comparePassword(password);
+  if (!isMatch) {
+    return res.status(403).send({ message: '비밀번호가 틀렸습니다.' });
+  }
+
+  await Post.deleteOne({ postId });
+  res.sendStatus(204);
 }));
 
 export default router;

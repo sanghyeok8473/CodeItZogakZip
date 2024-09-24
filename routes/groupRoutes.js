@@ -17,7 +17,7 @@ router.get('/:groupId', asyncHandler(async (req, res) => {
   const group = await Group.findOne({ groupId });
 
   if (!group) {
-    return res.status(404).send({ message: 'Cannot find given groupId' });
+    return res.status(404).send({ message: '주어진 groupId를 찾을 수 없습니다.' });
   }
 
   // 그룹이 public이 false인 경우 비밀번호 확인
@@ -26,13 +26,13 @@ router.get('/:groupId', asyncHandler(async (req, res) => {
 
     // 비밀번호가 제공되지 않은 경우
     if (!password) {
-      return res.status(400).send({ message: 'Password is required' });
+      return res.status(400).send({ message: '비공개 그룹을 조회할 때는 비밀번호가 필요합니다.' });
     }
 
     // 해시된 비밀번호와 입력된 비밀번호 비교
     const isMatch = await group.comparePassword(password, group.password);
     if (!isMatch) {
-      return res.status(403).send({ message: 'Invalid password' });
+      return res.status(403).send({ message: '비밀번호가 틀렸습니다.' });
     }
   }
 
@@ -48,7 +48,7 @@ router.post('/', upload.single('mainImg'), asyncHandler(async (req, res) => {
 
   // 비밀번호가 없으면 에러 반환
   if (!req.body.password) {
-    return res.status(400).send({ message: 'Password is required for creating a group.' });
+    return res.status(400).send({ message: '그룹을 등록할 때에는 비밀번호가 필요합니다.' });
   }
 
   const newGroupData = {
@@ -67,20 +67,20 @@ router.put('/:groupId', asyncHandler(async (req, res) => {
   const group = await Group.findOne({ groupId });
 
   if (!group) {
-    return res.status(404).send({ message: 'Cannot find given groupId' });
+    return res.status(404).send({ message: '주어진 groupId를 찾을 수 없습니다.' });
   }
 
   
   const { password } = req.body;
 
   if (!password) {
-    return res.status(400).send({ message: 'Password is required for updating a closed group.' });
+    return res.status(400).send({ message: '그룹 수정 시에는 비밀번호가 필요합니다.' });
   }
 
   // 해시된 비밀번호와 입력된 비밀번호 비교
   const isMatch = await group.comparePassword(password);
   if (!isMatch) {
-    return res.status(403).send({ message: 'Incorrect password.' });
+    return res.status(403).send({ message: '비밀번호가 틀렸습니다.' });
   }
 
   // 비밀번호는 업데이트 대상에서 제외
@@ -100,20 +100,20 @@ router.delete('/:groupId', asyncHandler(async (req, res) => {
   const group = await Group.findOne({ groupId });
 
   if (!group) {
-    return res.status(404).send({ message: 'Cannot find given groupId' });
+    return res.status(404).send({ message: '주어진 groupId를 찾을 수 없습니다.' });
   }
 
 
   const { password } = req.body;
 
   if (!password) {
-    return res.status(400).send({ message: 'Password is required for deleting a closed group.' });
+    return res.status(400).send({ message: '그룹 삭제시에는 비밀번호가 필요합니다.' });
   }
 
   // 비밀번호 검증
   const isMatch = await group.comparePassword(password);
   if (!isMatch) {
-    return res.status(403).send({ message: 'Incorrect password.' });
+    return res.status(403).send({ message: '비밀번호가 틀렸습니다.' });
   }
 
   await Group.deleteOne({ groupId });

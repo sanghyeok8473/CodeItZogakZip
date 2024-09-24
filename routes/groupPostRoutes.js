@@ -50,7 +50,7 @@ router.post('/:groupId', upload.single('postImg'), asyncHandler(async (req, res)
 
     // 비밀번호가 없으면 에러 반환
     if (!req.body.password) {
-      return res.status(400).send({ message: 'Password is required for creating a post.' });
+      return res.status(400).send({ message: '게시글을 등록할 때에는 비밀번호가 필요합니다.' });
     }
 
     const newPostData = {
