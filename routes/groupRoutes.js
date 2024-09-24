@@ -70,18 +70,17 @@ router.put('/:groupId', asyncHandler(async (req, res) => {
     return res.status(404).send({ message: 'Cannot find given groupId' });
   }
 
-  if (!group.public) {
-    const { password } = req.body;
+  
+  const { password } = req.body;
 
-    if (!password) {
-      return res.status(400).send({ message: 'Password is required for updating a closed group.' });
-    }
+  if (!password) {
+    return res.status(400).send({ message: 'Password is required for updating a closed group.' });
+  }
 
-    // 해시된 비밀번호와 입력된 비밀번호 비교
-    const isMatch = await group.comparePassword(password);
-    if (!isMatch) {
-      return res.status(403).send({ message: 'Incorrect password.' });
-    }
+  // 해시된 비밀번호와 입력된 비밀번호 비교
+  const isMatch = await group.comparePassword(password);
+  if (!isMatch) {
+    return res.status(403).send({ message: 'Incorrect password.' });
   }
 
   // 비밀번호는 업데이트 대상에서 제외
@@ -104,18 +103,17 @@ router.delete('/:groupId', asyncHandler(async (req, res) => {
     return res.status(404).send({ message: 'Cannot find given groupId' });
   }
 
-  if (!group.public) {
-    const { password } = req.body;
 
-    if (!password) {
-      return res.status(400).send({ message: 'Password is required for deleting a closed group.' });
-    }
+  const { password } = req.body;
 
-    // 비밀번호 검증
-    const isMatch = await group.comparePassword(password);
-    if (!isMatch) {
-      return res.status(403).send({ message: 'Incorrect password.' });
-    }
+  if (!password) {
+    return res.status(400).send({ message: 'Password is required for deleting a closed group.' });
+  }
+
+  // 비밀번호 검증
+  const isMatch = await group.comparePassword(password);
+  if (!isMatch) {
+    return res.status(403).send({ message: 'Incorrect password.' });
   }
 
   await Group.deleteOne({ groupId });

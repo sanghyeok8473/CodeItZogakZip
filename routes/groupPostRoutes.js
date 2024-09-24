@@ -6,13 +6,8 @@ import asyncHandler from '../middlewares/asyncHandler.js'; // 에러 핸들링 �
 
 const router = express.Router();
 // /api/posts/:groupId/posts의 GET, POST리퀘스트의 라우트
-// post는 그룹의 내부에 있는 개념이기 때문에, Group의 코드를 그대로 사용하기에는 무리가 있음.
-// 먼저, Group 스키마에 Post라는 형식을 추가하고, 여기에 넣는 개념으로 가야함.
 
 // 게시글 목록 조회
-// 먼저 groupId를 통해서 해당 그룹을 가져올 수 있도록 하고,
-// 해당 group의 posts배열에 들어있는 postId들만 뽑아서 게시글을 가져올 수 있도록 하면 됨.
-
 router.get('/:groupId', asyncHandler(async (req, res) => {
   const groupId = Number(req.params.groupId);
 
