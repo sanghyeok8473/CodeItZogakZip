@@ -2,7 +2,7 @@ GET http://localhost:3000/groups
 
 ###
 
-GET http://localhost:3000/groups/5
+GET http://localhost:3000/groups/2
 
 ###
 
@@ -10,13 +10,37 @@ GET http://localhost:3000/posts/4
 
 ###
 
+GET https://zogakzip4.onrender.com/groups/posts/2
+
+###
+
+DELETE https://zogakzip4.onrender.com/groups/3
+Content-Type: application/json
+
+{
+    "password": "2345"
+}
+
+###
+
+DELETE http://localhost:3000/posts/4
+Content-Type: application/json
+
+{
+    "password": "12345"
+}
+
+###
+
 PUT http://localhost:3000/posts/4
 Content-Type: application/json
 
 {
-    "name": "수정된 게시글 작성자 4",
+    "nickname": "수정된 게시글 작성자 4!4",
+    "title": "수정된 게시글 제목",
     "content": "PUT4",
-    "password": "2345"
+    "tags": "#힐링안됨",
+    "postPassword": "12345"
 }
 
 ###

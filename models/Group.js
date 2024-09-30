@@ -7,23 +7,17 @@ const GroupSchema = new mongoose.Schema(
     groupId: {
       type: Number,
       required: true,
-      default: 1,
     },
     name: {
       type: String,
       required: true,
       maxLength: 20,
     },
-    mainImg: {
+    imageUrl: {
       type: String,
       default: '',
     },
-    description: {
-      type: String,
-      required: true,
-      maxLength: 60,
-    },
-    public: {
+    isPublic: {
       type: Boolean,
       required: true,
       default: true,
@@ -32,22 +26,32 @@ const GroupSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    likeCount: {
+      type: Number,
+      default: 0,
+    },
     badges: {
+      type: [String],
+      default: []
+    },
+    badgeCount: {
       type: Number,
       default: 0,
     },
-    memories: {
-      type: Number,
-      default: 0,
-    },
-    likes: {
+    postCount: {
       type: Number,
       default: 0,
     },
     posts: {
       type: [Number],
       default: []
-    }
+    },
+    introduction: {
+      type: String,
+      required: true,
+      maxLength: 60,
+      default: '',
+    },
   },
   {
     timestamps: true,
