@@ -1,4 +1,12 @@
+GET http://localhost:3000/groups?page=1&pageSize=10&sortBy=mostLiked&keyword=확인&isPublic=true
+
+###
+
 GET http://localhost:3000/groups
+
+###
+
+GET http://localhost:3000/groups/4
 
 ###
 
@@ -6,11 +14,11 @@ GET https://zogakzip4.onrender.com/groups
 
 ###
 
-DELETE https://zogakzip4.onrender.com/groups/7
+DELETE https://zogakzip4.onrender.com/groups/6
 Content-Type: application/json
 
 {
-    "password": "2345"
+    "password": "2322245"
 }
 
 ###
@@ -28,28 +36,28 @@ POST http://localhost:3000/groups
 Content-Type: application/json
 
 {
-    "name": "POST 리퀘스트 테스트092322",
-    "description": "POST",
-    "public": false,
+    "name": "스키마 업데이트 테스트",
+    "introduction": "스키마",
+    "isPublic": false,
     "password": "5678"
 }
 
 ###
 
-PUT http://localhost:3000/groups/10
+PUT http://localhost:3000/groups/7
 Content-Type: application/json
 
 {
-    "name": "수정 여부 확인",
-    "description": "PUT2",
-    "password": "2345"
+    "name": "그룹 수정 여부 확인",
+    "introuduction": "PUT2",
+    "password": "5678"
 }
 
 ###
 
-DELETE http://localhost:3000/groups/10
+DELETE http://localhost:3000/groups/1
 Content-Type: application/json
 
 {
-    "password": "2345"
+    "password": "12"
 }

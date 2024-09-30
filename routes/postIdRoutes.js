@@ -19,14 +19,30 @@ router.get('/:postId', asyncHandler(async (req, res) => {
     // postId를 기준으로 게시글 조회, 특정 필드 제외
     const post = await Post.findOne(
       { postId }, // postId가 일치하는 게시글 조회
-      { _id: 0, password: 0, updatedAt: 0, __v: 0 } // 제외할 필드들을 명시
+      { _id: 0, postPassword: 0, updatedAt: 0, __v: 0 } // 제외할 필드들을 명시
     );
 
     if (!post) {
       return res.status(404).send({ message: '주어진 postId를 찾을 수 없습니다.' });
     }
 
-    res.status(200).send(post);
+    const responseData = {
+      id: post.postId, // postId를 id로 변경
+      groupId: post.groupId,
+      nickname: post.nickname,
+      title: post.title,
+      content: post.content,
+      imageUrl: post.imageUrl,
+      tags: post.tags,
+      location: post.location,
+      moment: post.moment,
+      isPublic: post.isPublic,
+      likeCount: post.likeCount,
+      commentCount: post.commentCount,
+      createdAt: post.createdAt,
+    };
+
+    res.status(200).send(responseData);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -38,31 +54,50 @@ router.put('/:postId', asyncHandler(async (req, res) => {
   const post = await Post.findOne({ postId });
 
   if (!post) {
-    return res.status(404).send({ message: '주어진 postId를 찾을 수 없습니다.' });
+    return res.status(404).send({ message: '존재하지 않습니다' });
   }
 
-  const { password } = req.body;
+  const { postPassword } = req.body;
 
-  if (!password) {
-    return res.status(400).send({ message: '게시글을 삭제하기 위해서는 비밀번호가 필요합니다.' });
+  if (!postPassword) {
+    return res.status(400).send({ message: '잘못된 요청입니다' });
   }
 
   // 해시된 비밀번호와 입력된 비밀번호 비교
-  const isMatch = await post.comparePassword(password);
+  const isMatch = await post.comparePassword(postPassword);
   if (!isMatch) {
     return res.status(403).send({ message: '비밀번호가 틀렸습니다.' });
   }
 
   // 비밀번호는 업데이트 대상에서 제외
   Object.keys(req.body).forEach((key) => {
-    if (key !== 'password') {
+    if (key !== 'postPassword') {
       post[key] = req.body[key];
     }
   });
 
   await post.save();
-  res.send(post);
+
+  // 응답 데이터 변환
+  const responseData = {
+    id: post.postId, // postId를 id로 변경
+    groupId: post.groupId,
+    nickname: post.nickname,
+    title: post.title,
+    content: post.content,
+    imageUrl: post.imageUrl,
+    tags: post.tags,
+    location: post.location,
+    moment: post.moment,
+    isPublic: post.isPublic,
+    likeCount: post.likeCount,
+    commentCount: post.commentCount,
+    createdAt: post.createdAt,
+  };
+
+  res.send(responseData);
 }));
+
 
 // 게시글 삭제
 router.delete('/:postId', asyncHandler(async (req, res) => {
@@ -70,13 +105,13 @@ router.delete('/:postId', asyncHandler(async (req, res) => {
   const post = await Post.findOne({ postId });
 
   if (!post) {
-    return res.status(404).send({ message: '주어진 postId를 찾을 수 없습니다.' });
+    return res.status(404).send({ message: '존재하지 않습니다' });
   }
 
   const { password } = req.body;
 
   if (!password) {
-    return res.status(400).send({ message: '게시글 삭제 시에는 비밀번호가 필요합니다.' });
+    return res.status(400).send({ message: '잘못된 요청입니다' });
   }
 
   // 비밀번호 검증
@@ -86,7 +121,7 @@ router.delete('/:postId', asyncHandler(async (req, res) => {
   }
 
   await Post.deleteOne({ postId });
-  res.sendStatus(204);
+  res.status(200).send({ message: '게시글 삭제 성공' });
 }));
 
 export default router;
