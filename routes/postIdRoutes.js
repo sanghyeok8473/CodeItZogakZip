@@ -1,10 +1,6 @@
-// PUT DELETE GET 리퀘스트 추가
-// 게시글 수정, 삭제, 상세 정보 조회
-
 import express from 'express';
 import Group from '../models/Group.js';
 import Post from '../models/Post.js'; // 게시글 모델
-import upload from '../upload.js'; // multer 설정
 import asyncHandler from '../middlewares/asyncHandler.js'; // 에러 핸들링 미들웨어
 
 const router = express.Router();
@@ -38,7 +34,7 @@ router.get('/:postId', asyncHandler(async (req, res) => {
       moment: post.moment,
       isPublic: post.isPublic,
       likeCount: post.likeCount,
-      commentCount: post.commentCount,
+      commentCount: post.comments.length,
       createdAt: post.createdAt,
     };
 
@@ -108,19 +104,27 @@ router.delete('/:postId', asyncHandler(async (req, res) => {
     return res.status(404).send({ message: '존재하지 않습니다' });
   }
 
-  const { password } = req.body;
+  const { postPassword } = req.body;
 
-  if (!password) {
+  if (!postPassword) {
     return res.status(400).send({ message: '잘못된 요청입니다' });
   }
 
   // 비밀번호 검증
-  const isMatch = await post.comparePassword(password);
+  const isMatch = await post.comparePassword(postPassword);
   if (!isMatch) {
     return res.status(403).send({ message: '비밀번호가 틀렸습니다.' });
   }
 
   await Post.deleteOne({ postId });
+
+  // 그룹에서 posts 배열 업데이트 (해당 게시글의 postId 제거)
+  const group = await Group.findOne({ groupId: post.groupId });
+  if (group) {
+    group.posts = group.posts.filter((id) => id !== postId);
+    await group.save();
+  }
+
   res.status(200).send({ message: '게시글 삭제 성공' });
 }));
 

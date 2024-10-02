@@ -54,7 +54,7 @@ router.get('/', asyncHandler(async (req, res) => {
       isPublic: group.isPublic,
       likeCount: group.likeCount,
       badgeCount: group.badgeCount,
-      postCount: group.postCount,
+      postCount: group.posts.length,
       createdAt: group.createdAt,
       introduction: group.introduction
     }))
@@ -94,7 +94,7 @@ router.get('/:groupId', asyncHandler(async (req, res) => {
     isPublic: group.isPublic,
     likeCount: group.likeCount,
     badgeCount: group.badgeCount,
-    postCount: group.postCount,
+    postCount: group.posts.length,
     createdAt: group.createdAt,
     introduction: group.introduction,
   };

@@ -11,7 +11,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/posts/4
+GET http://localhost:3000/posts/1
 
 ###
 
@@ -39,15 +39,11 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/posts/4
+DELETE http://localhost:3000/comments/9
 Content-Type: application/json
 
 {
-    "nickname": "수정된 게시글 작성자 4!4",
-    "title": "수정된 게시글 제목",
-    "content": "PUT4",
-    "tags": "#힐링안됨",
-    "postPassword": "12345"
+    "password": "1234"
 }
 
 ###
