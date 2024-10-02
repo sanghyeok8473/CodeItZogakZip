@@ -1,5 +1,6 @@
 import express from 'express';
 import Comment from '../models/Comment.js'; // 댓글 모델
+import Post from '../models/Post.js'; // 게시글 모델
 import asyncHandler from '../middlewares/asyncHandler.js'; // 에러 핸들링 미들웨어
 
 const router = express.Router();
@@ -68,6 +69,14 @@ router.delete('/:commentId', asyncHandler(async (req, res) => {
   }
 
   await Comment.deleteOne({ commentId });
+
+  // 게시글에서 comments 배열 업데이트 (해당 게시글의 commentId 제거)
+  const post = await Post.findOne({ comments: commentId });
+  if (post) {
+    post.comments = post.comments.filter((id) => id !== commentId);
+    await post.save();
+  }
+
   res.status(200).send({ message: '답글 삭제 성공' });
 }));
 

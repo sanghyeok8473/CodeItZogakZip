@@ -59,7 +59,7 @@ router.get('/:groupId', asyncHandler(async (req, res) => {
       .sort(sortOption)
       .skip((page - 1) * pageSize)
       .limit(Number(pageSize))
-      .select('postId nickname title imageUrl tags location moment isPublic likeCount commentCount createdAt'); // 필요한 필드 선택
+      .select('postId nickname title imageUrl tags location moment isPublic likeCount comments commentCount createdAt'); // 필요한 필드 선택
 
     // 응답 데이터 변환
     const responseData = posts.map(post => ({
@@ -72,7 +72,7 @@ router.get('/:groupId', asyncHandler(async (req, res) => {
       moment: post.moment,
       isPublic: post.isPublic,
       likeCount: post.likeCount,
-      commentCount: post.commentCount,
+      commentCount: post.comments.length,
       createdAt: post.createdAt,
     }));
 
