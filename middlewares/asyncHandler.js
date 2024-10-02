@@ -6,7 +6,7 @@ export default function asyncHandler(handler) {
       if (e.name === 'ValidationError') {
         res.status(400).send({ message: e.message });
       } else if (e.name === 'CastError') {
-        res.status(404).send({ message: 'Cannot find given groupId.' });
+        res.status(404).send({ message: e.message });
       } else {
         res.status(500).send({ message: e.message });
       }

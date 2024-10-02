@@ -56,6 +56,10 @@ const PostSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    comments: {
+      type: [Number],
+      default: []
+    },
     postPassword: {
       type: String,
       required: true,
